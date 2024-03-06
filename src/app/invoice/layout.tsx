@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Icon } from '@iconify/react';
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 type SubItem = {
     id: number;
@@ -13,7 +14,7 @@ type SubItem = {
 type Item = {
     id: number;
     name: string;
-    path?: string;
+    path: string;
     iconName: string;
     subItem: SubItem[];
 };
@@ -22,7 +23,7 @@ const sidebarData = [
     {
         id: 1,
         name: "Invoice",
-        path: "/",
+        path: "/invoice",
         iconName: "mage:dashboard-fill",
         subItem: [],
     },
@@ -36,25 +37,7 @@ const sidebarData = [
     {
         id: 3,
         name: "Inventory",
-        iconName: "material-symbols:inventory-2",
-        subItem: [
-            {
-                id: 1,
-                name: "Items",
-                path: "/items",
-                iconName: "system-uicons:boxes",
-            },
-            {
-                id: 2,
-                name: "Services",
-                path: "/services",
-                iconName: "ri:service-fill",
-            },
-        ],
-    },
-    {
-        id: 3,
-        name: "Inventory",
+		path: "/inventory",
         iconName: "material-symbols:inventory-2",
         subItem: [
             {
@@ -83,10 +66,11 @@ function SubItem({ name, path, iconName }: SubItem) {
     );
 }
 function SidebarItem({ name, path,iconName, subItem }: Item) {
-    if (path) {
+	const pathNames = usePathname();
+    if (subItem.length <= 0) {
         return (
             <li>
-                <Link href={path} className="w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950">
+                <Link href={path} className={`w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950 ${pathNames.startsWith(path)?"bg-neutral-950 ":""}`}>
 					<Icon icon={iconName}/>
                     {name}
                 </Link>
@@ -95,11 +79,11 @@ function SidebarItem({ name, path,iconName, subItem }: Item) {
     }
     if (subItem.length > 0) {
         return (
-            <li className={`grid ${true?"grid-rows-[auto,1fr]":"grid-rows-[auto,0fr]"} transition-[grid-template-rows]`}>
-                <button className=" w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950 text-left">
+            <li className={`group   grid ${true?"grid-rows-[auto,1fr]":"grid-rows-[auto,0fr]"} transition-[grid-template-rows]  `}>
+                <Link href={path} className="group-focus:bg-blue-500 w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950 text-left">
                     <Icon icon={iconName}/>
 					{name}
-                </button>
+                </Link>
                 <ul className="overflow-hidden shadow-inner bg-neutral-900/50">
 					{subItem.map((subItem: SubItem) => (
 						<SubItem key={subItem.id} {...subItem} />
@@ -129,6 +113,7 @@ export default function RootLayout({
         <>
             <InvoiceSidebar />
             <div className="pl-64">{children}</div>
+            
         </>
     );
 }

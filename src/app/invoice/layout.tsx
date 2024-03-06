@@ -76,8 +76,8 @@ function SidebarItem({name, path, subItem}: Item) {
 }
 function InvoiceSidebar() {
 	return (
-        <div className="bg-neutral-900 fixed top-0 left-0 bottom-0 w-64">
-            <ul>
+        <div className="bg-neutral-800 text-neutral-50 fixed top-0 left-0 bottom-0 w-64">
+            <ul className="h-full overflow-y-scroll scrollbar-thin">
                 {sidebarData.map((item:Item) => (
                     <SidebarItem key={item.id} {...item} />
                 ))}

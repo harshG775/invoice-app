@@ -3,12 +3,12 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 export default function Parties() {
     const searchParams = useSearchParams();
-    const inventoryType = searchParams.get("type")
+    const billsType = searchParams.get("type")
     return (
         <div>
-            <h1>inventory:{inventoryType}</h1>
-            <Link href={`/parties/create?type=${inventoryType}`}>
-                Create inventory
+            <h1>bills:{billsType}</h1>
+            <Link href={`/parties/create?type=${billsType}`}>
+                Create bills
             </Link>
         </div>
     );

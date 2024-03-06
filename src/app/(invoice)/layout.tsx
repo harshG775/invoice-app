@@ -23,19 +23,19 @@ const sidebarData = [
     {
         id: 2,
         name: "Parties",
-        path: "/parties",
+        path: "/#",
         iconName: "carbon:license-third-party-draft",
         subItem: [
             {
                 id: 1,
                 name: "Customers",
-                path: "/customers",
+                path: "parties?type=customers",
                 iconName: "eva:arrow-right-fill",
             },
             {
                 id: 2,
                 name: "Suppliers",
-                path: "/suppliers",
+                path: "parties?type=suppliers",
                 iconName: "eva:arrow-right-fill",
             },
         ],
@@ -43,13 +43,13 @@ const sidebarData = [
     {
         id: 3,
         name: "Inventory",
-		path: "/inventory",
+		path: "/#",
         iconName: "material-symbols:inventory-2",
         subItem: [
             {
                 id: 1,
                 name: "Items",
-                path: "/items",
+                path: "/Inventory?type=items",
                 iconName: "eva:arrow-right-fill",
             },
         ],
@@ -57,13 +57,13 @@ const sidebarData = [
     {
         id: 3,
         name: "Bills",
-		path: "/bills",
+		path: "/#",
         iconName: "tdesign:money",
         subItem: [
             {
                 id: 1,
                 name: "Sales",
-                path: "/sales",
+                path: "bills?type=sales",
                 iconName: "eva:arrow-right-fill",
             },
         ],
@@ -72,7 +72,7 @@ const sidebarData = [
 function SubItem({ name, path, iconName }: SubItem) {
     return (
         <li>
-            <Link href={path} className="w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950">
+            <Link href={`/${path}`} className="w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950">
 				<Icon icon={iconName}/>
                 {name}
             </Link>
@@ -84,7 +84,7 @@ function SidebarItem({ name, path,iconName, subItem }: Item) {
     if (subItem.length <= 0) {
         return (
             <li>
-                <Link href={path} className={`w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950 ${pathNames.startsWith(path)?"bg-neutral-950 ":""}`}>
+                <Link href={`/${path}`} className={`w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950 ${pathNames.startsWith(path)?"bg-neutral-950 ":""}`}>
 					<Icon icon={iconName}/>
                     {name}
                 </Link>
@@ -94,10 +94,10 @@ function SidebarItem({ name, path,iconName, subItem }: Item) {
     if (subItem.length > 0) {
         return (
             <li className={`group   grid ${true?"grid-rows-[auto,1fr]":"grid-rows-[auto,0fr]"} transition-[grid-template-rows]  `}>
-                <Link href={path} className="group-focus:bg-blue-500 w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950 text-left">
+                <button  className="group-focus:bg-blue-500 w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950 text-left">
                     <Icon icon={iconName}/>
 					{name}
-                </Link>
+                </button>
                 <ul className="overflow-hidden shadow-inner bg-neutral-900/50">
 					{subItem.map((subItem: SubItem) => (
 						<SubItem key={subItem.id} {...subItem} />

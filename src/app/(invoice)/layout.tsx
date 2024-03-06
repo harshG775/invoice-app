@@ -49,7 +49,7 @@ const sidebarData = [
             {
                 id: 1,
                 name: "Items",
-                path: "/Inventory?type=items",
+                path: "inventory?type=items",
                 iconName: "eva:arrow-right-fill",
             },
         ],

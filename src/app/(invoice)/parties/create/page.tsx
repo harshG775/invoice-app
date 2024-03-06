@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm ,SubmitHandler} from "react-hook-form";
 import { z } from "zod";
 const partyFormSchema = z.object({
     partyType: z.string(),
@@ -19,9 +19,9 @@ type FormData = z.infer<typeof partyFormSchema>
 export default function CreateParty() {
     const searchParams = useSearchParams();
     const partyType = searchParams.get("type");
-    const { register, handleSubmit } = useForm({
+    const { register, handleSubmit } = useForm <FormData>({
         defaultValues: {
-            partyType: partyType,
+            partyType: partyType||"",
             partyName: "",
             contactPerson: "",
             emailAddress: "",
@@ -34,7 +34,7 @@ export default function CreateParty() {
             notes: "",
         },
     });
-    const handleFormSubmit = (data: FormData) => {
+    const handleFormSubmit: SubmitHandler <FormData> = (data) => {
         console.log(data);
     };
 

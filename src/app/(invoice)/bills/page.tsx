@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-export default function Parties() {
+export default function Bills() {
     const searchParams = useSearchParams();
     const billsType = searchParams.get("type")
     return (

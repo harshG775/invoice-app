@@ -1,6 +1,6 @@
 "use client"
 import { useSearchParams } from "next/navigation";
-export default function CreateParties() {
+export default function CreateParty() {
     const searchParams = useSearchParams();
     const partyType = searchParams.get("type")
     return (

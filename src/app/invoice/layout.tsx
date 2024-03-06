@@ -21,18 +21,24 @@ type Item = {
 
 const sidebarData = [
     {
-        id: 1,
-        name: "Invoice",
-        path: "/invoice",
-        iconName: "mage:dashboard-fill",
-        subItem: [],
-    },
-    {
         id: 2,
-        name: "Sales",
-        path: "/sales",
-        iconName: "mdi:sale-box",
-        subItem: [],
+        name: "Parties",
+        path: "/parties",
+        iconName: "carbon:license-third-party-draft",
+        subItem: [
+            {
+                id: 1,
+                name: "Customers",
+                path: "/customers",
+                iconName: "eva:arrow-right-fill",
+            },
+            {
+                id: 2,
+                name: "Suppliers",
+                path: "/suppliers",
+                iconName: "eva:arrow-right-fill",
+            },
+        ],
     },
     {
         id: 3,
@@ -44,13 +50,21 @@ const sidebarData = [
                 id: 1,
                 name: "Items",
                 path: "/items",
-                iconName: "system-uicons:boxes",
+                iconName: "eva:arrow-right-fill",
             },
+        ],
+    },
+    {
+        id: 3,
+        name: "Bills",
+		path: "/bills",
+        iconName: "tdesign:money",
+        subItem: [
             {
-                id: 2,
-                name: "Services",
-                path: "/services",
-                iconName: "ri:service-fill",
+                id: 1,
+                name: "Sales",
+                path: "/sales",
+                iconName: "eva:arrow-right-fill",
             },
         ],
     },

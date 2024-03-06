@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { Icon } from '@iconify/react';
+import { useState } from "react";
 
 type SubItem = {
     id: number;
@@ -21,50 +23,71 @@ const sidebarData = [
         id: 1,
         name: "Invoice",
         path: "/",
-        iconName: "",
+        iconName: "mage:dashboard-fill",
         subItem: [],
     },
     {
         id: 2,
         name: "Sales",
         path: "/sales",
-        iconName: "",
+        iconName: "mdi:sale-box",
         subItem: [],
     },
     {
         id: 3,
         name: "Inventory",
-        iconName: "",
+        iconName: "material-symbols:inventory-2",
         subItem: [
             {
                 id: 1,
                 name: "Items",
                 path: "/items",
-                iconName: "",
+                iconName: "system-uicons:boxes",
             },
             {
                 id: 2,
                 name: "Services",
                 path: "/services",
-                iconName: "",
+                iconName: "ri:service-fill",
+            },
+        ],
+    },
+    {
+        id: 3,
+        name: "Inventory",
+        iconName: "material-symbols:inventory-2",
+        subItem: [
+            {
+                id: 1,
+                name: "Items",
+                path: "/items",
+                iconName: "system-uicons:boxes",
+            },
+            {
+                id: 2,
+                name: "Services",
+                path: "/services",
+                iconName: "ri:service-fill",
             },
         ],
     },
 ];
-function SubItem({ name, path }: SubItem) {
+function SubItem({ name, path, iconName }: SubItem) {
     return (
         <li>
-            <Link href={path} className="w-full inline-block">
+            <Link href={path} className="w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950">
+				<Icon icon={iconName}/>
                 {name}
             </Link>
         </li>
     );
 }
-function SidebarItem({ name, path, subItem }: Item) {
+function SidebarItem({ name, path,iconName, subItem }: Item) {
     if (path) {
         return (
             <li>
-                <Link href={path} className="w-full inline-block">
+                <Link href={path} className="w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950">
+					<Icon icon={iconName}/>
                     {name}
                 </Link>
             </li>
@@ -72,11 +95,12 @@ function SidebarItem({ name, path, subItem }: Item) {
     }
     if (subItem.length > 0) {
         return (
-            <li>
-                <button className="w-full inline-block text-left">
-                    {name}
+            <li className={`grid ${true?"grid-rows-[auto,1fr]":"grid-rows-[auto,0fr]"} transition-[grid-template-rows]`}>
+                <button className=" w-full grid grid-cols-[auto,1fr] gap-3 items-center p-2 hover:bg-neutral-950 text-left">
+                    <Icon icon={iconName}/>
+					{name}
                 </button>
-                <ul>
+                <ul className="overflow-hidden shadow-inner bg-neutral-900/50">
 					{subItem.map((subItem: SubItem) => (
 						<SubItem key={subItem.id} {...subItem} />
 					))}

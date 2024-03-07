@@ -1,26 +1,66 @@
 "use client";
 import React from "react";
-import { useForm,type FieldValues } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// in separate folder
+import { z } from "zod";
+const signUpSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(10,"password must be at least 10 characters"),
+    conformPassword: z.string().min(10,"password must be at least 10 characters"),
+}).refine(data => data.password === data.conformPassword, {
+    message: "passwords do not match",
+    path: ["conformPassword"],
+});
+type TypeSignUpSchema = z.infer<typeof signUpSchema>;
+// in separate folder
+
+
 export default function Form() {
     const {
         register,
         handleSubmit,
-        formState: { isSubmitting,errors},
+        formState: { isSubmitting, errors },
         reset,
-        getValues,
-    } = useForm({
-        defaultValues: {
-            email: "",
-            password: "",
-            conformPassword: "",
-        },
+        setError
+    } = useForm<TypeSignUpSchema>({
+        resolver: zodResolver(signUpSchema),
     });
-    const onHandleSubmit=async(formData:FieldValues)=>{
+    const onHandleSubmit = async (formData:TypeSignUpSchema) => {
+        await new Promise((r) => setTimeout(r, 1000));
+        const response = await fetch("/api/auth/signup", {
+            method: "POST",
+            body: JSON.stringify(formData),
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const respData = await response.json();
         
-        await new Promise((r)=>setTimeout(r,1000))
-        console.log(formData)
-        reset()
-    }
+        if(respData.errors) {
+            const errors = respData.errors;
+            if(errors.email) {
+                setError("email",{
+                    type:"server",
+                    message:errors.email
+                });
+            }
+            if(errors.password) {
+                setError("password",{
+                    type:"server",
+                    message:errors.password
+                });
+            }
+            if(errors.conformPassword) {
+                setError("conformPassword",{
+                    type:"server",
+                    message:errors.conformPassword
+                });
+            }
+            return
+        }
+    };
     return (
         <form
             onSubmit={handleSubmit(onHandleSubmit)}
@@ -32,16 +72,7 @@ export default function Form() {
                     <input
                         type="email"
                         id="email"
-                        {...register("email", {
-                            required: {
-                                value: true,
-                                message: "Email is required",
-                            },
-                            pattern: {
-                                value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                                message: "Invalid Email",
-                            },
-                        })}
+                        {...register("email")}
                         placeholder="Enter Email"
                         className={`${
                             errors.email?.message
@@ -50,7 +81,7 @@ export default function Form() {
                         } outline`}
                     />
                     <span className="text-red-800 text-xs">
-                        {errors.email?.message}
+                        {`${errors.email?errors.email.message:""}`}
                     </span>
                 </li>
                 <li>
@@ -58,17 +89,7 @@ export default function Form() {
                     <input
                         type="text"
                         id="password"
-                        {...register("password", {
-                            required:{
-                                value:true,
-                                message:"password is required"
-                            },
-                            minLength: {
-                                value: 6,
-                                message:
-                                    "Password must be at least 6 characters",
-                            },
-                        })}
+                        {...register("password")}
                         placeholder="Enter password"
                         className={`${
                             errors.password?.message
@@ -77,7 +98,7 @@ export default function Form() {
                         } outline`}
                     />
                     <span className="text-red-800 text-xs">
-                        {errors.password?.message}
+                        {`${errors.password?errors.password.message:""}`}
                     </span>
                 </li>
                 <li>
@@ -85,19 +106,7 @@ export default function Form() {
                     <input
                         type="text"
                         id="conformPassword"
-                        {...register("conformPassword", {
-                            required:{
-                                value:true,
-                                message:"password is required"
-                            },
-                            minLength: {
-                                value: 6,
-                                message:
-                                    "Conform Password must be at least 6 characters",
-                            },
-                            validate: (value) =>
-                                value === getValues("password") || "Password does not match",
-                        })}
+                        {...register("conformPassword")}
                         placeholder="Re-Enter password"
                         className={`${
                             errors.conformPassword?.message
@@ -106,7 +115,7 @@ export default function Form() {
                         } outline`}
                     />
                     <span className="text-red-800 text-xs">
-                        {errors.conformPassword?.message}
+                        {`${errors.conformPassword?errors.conformPassword.message:""}`}
                     </span>
                 </li>
             </ul>

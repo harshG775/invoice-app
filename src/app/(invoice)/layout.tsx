@@ -109,7 +109,10 @@ function SidebarItem({ name, path,iconName, subItem }: Item) {
 }
 function InvoiceSidebar() {
     return (
-        <div className="bg-neutral-800 text-neutral-50 fixed top-0 left-0 bottom-0 w-64">
+        <div className="
+            bg-neutral-800 text-neutral-50 fixed top-0 left-0 bottom-0 w-64
+            lg:translate-x-[0%] -translate-x-full transition-transform duration-300
+        ">
             <ul className="h-full overflow-y-scroll scrollbar-thin">
                 {sidebarData.map((item: Item) => (
                     <SidebarItem key={item.id} {...item} />
@@ -126,7 +129,7 @@ export default function RootLayout({
     return (
         <>
             <InvoiceSidebar />
-            <div className="pl-64">{children}</div>
+            <div className="lg:pl-64 pl-[0rem] transition-[padding] duration-300">{children}</div>
             
         </>
     );

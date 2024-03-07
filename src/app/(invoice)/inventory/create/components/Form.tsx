@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { useForm,FieldValues } from "react-hook-form";
+import React from "react";
+import { useForm,type FieldValues } from "react-hook-form";
 export default function Form() {
     const {
         register,
@@ -16,10 +16,8 @@ export default function Form() {
         },
     });
     const onHandleSubmit=async(formData:FieldValues)=>{
-        if (getValues("password") !== getValues("conformPassword")) {
-            
-        }
-        // await new Promise((r)=>setTimeout(r,2000))
+        
+        await new Promise((r)=>setTimeout(r,1000))
         console.log(formData)
         reset()
     }
